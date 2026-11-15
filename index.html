@@ -1,1 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<title>VyloVault – Your Digital Password Safe</title>
+<meta name="description" content="VyloVault is a password manager for Windows. Everything is encrypted locally on your PC. Free download.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:#100B1D;
+  --card:#181029;
+  --card2:#21173A;
+  --line:#2F2252;
+  --text:#F8F5FF;
+  --sub:#D8C8FF;
+  --muted:#9A8CC0;
+  --electric:#853BFA;
+  --ultra:#B044F5;
+  --orchid:#E05BCE;
+  --grad:linear-gradient(90deg,#853BFA,#B044F5,#E05BCE);
+  --font:"Sora","Segoe UI",system-ui,sans-serif;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg:#F8F5FF;
+    --card:#FFFFFF;
+    --card2:#F1EBFF;
+    --line:#DDD0FF;
+    --text:#1B1235;
+    --sub:#5A4690;
+    --muted:#6F6196;
+  }
+}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+}
+
+html {
+  scroll-behavior:smooth;
+}
+
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+a { color:inherit; }
+
+:focus-visible {
+  outline:3px solid var(--orchid);
+  outline-offset:3px;
+  border-radius:8px;
+}
+
+.wrap {
+  max-width:1060px;
+  margin:0 auto;
+  padding:0 24px;
+}
+
+nav {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:22px 0;
+}
+
+.logo {
+  font-weight:700;
+  font-size:1.25rem;
+  text-decoration:none;
+  background:var(--grad);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+nav a.lnk {
+  color:var(--sub);
+  text-decoration:none;
+  font-size:.95rem;
+  margin-left:24px;
+}
+
+nav a.lnk:hover { color:var(--text); }
+
+.btn {
+  display:inline-block;
+  background:var(--grad);
+  color:#fff;
+  font-weight:600;
+  text-decoration:none;
+  padding:15px 30px;
+  border-radius:999px;
+  transition:transform .15s,box-shadow .15s;
+  box-shadow:0 8px 28px -8px #853BFA;
+}
+
+.btn:hover {
+  transform:translateY(-2px);
+  box-shadow:0 12px 32px -8px #B044F5;
+}
+
+.btn.ghost {
+  background:var(--card2);
+  box-shadow:none;
+  border:1.5px solid var(--line);
+  color:var(--text);
+}
+
+.hero {
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:56px;
+  align-items:center;
+  padding:56px 0 96px;
+}
+
+h1 {
+  font-size:clamp(2.3rem,5.4vw,3.9rem);
+  line-height:1.08;
+  font-weight:700;
+  letter-spacing:-.02em;
+}
+
+.lead {
+  color:var(--sub);
+  font-size:1.12rem;
+  max-width:34em;
+  margin:22px 0 32px;
+}
+
+.cta {
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.small {
+  color:var(--muted);
+  font-size:.88rem;
+  margin-top:16px;
+}
+
+.mock {
+  background:var(--card);
+  border:1.5px solid var(--line);
+  border-radius:30px;
+  padding:22px;
+  box-shadow:0 30px 80px -30px #853BFA;
+  transform:rotate(1.5deg);
+}
+
+.mock .bar {
+  height:6px;
+  width:54px;
+  border-radius:3px;
+  background:var(--grad);
+  margin-bottom:16px;
+}
+
+.row {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:var(--card2);
+  border-radius:20px;
+  padding:13px 16px;
+  margin-top:10px;
+}
+
+.av {
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  font-weight:700;
+  color:#fff;
+  flex:none;
+}
+
+.row b {
+  display:block;
+  font-size:.98rem;
+}
+
+.row span {
+  color:var(--muted);
+  font-size:.82rem;
+}
+
+.pw {
+  margin-left:auto;
+  font-family:Consolas,monospace;
+  letter-spacing:.15em;
+  color:var(--ultra);
+}
+
+.meter {
+  display:flex;
+  gap:5px;
+  margin-top:18px;
+}
+
+.meter i {
+  flex:1;
+  height:7px;
+  border-radius:4px;
+  background:#4ADE80;
+}
+
+.meter + p {
+  color:#4ADE80;
+  font-size:.85rem;
+  margin-top:8px;
+}
+
+section {
+  padding:72px 0;
+  border-top:1px solid var(--line);
+}
+
+h2 {
+  font-size:clamp(1.6rem,3.4vw,2.3rem);
+  line-height:1.2;
+  letter-spacing:-.01em;
+  margin-bottom:34px;
+  max-width:20em;
+}
+
+.feat {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:36px;
+}
+
+.feat h3 {
+  font-size:1.1rem;
+  margin-bottom:8px;
+}
+
+.feat p,.facts li,.steps li,details p {
+  color:var(--sub);
+}
+
+.facts {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px 40px;
+  list-style:none;
+  padding:0;
+}
+
+.facts li {
+  padding-left:22px;
+  position:relative;
+}
+
+.facts li::before {
+  content:"";
+  position:absolute;
+  left:0;
+  top:.7em;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--orchid);
+}
+
+.steps {
+  padding-left:1.2em;
+  max-width:40em;
+}
+
+.steps li {
+  margin-bottom:12px;
+  padding-left:6px;
+}
+
+.dl {
+  background:var(--card);
+  border:1.5px solid var(--line);
+  border-radius:30px;
+  padding:40px;
+  text-align:center;
+}
+
+.dl h2 {
+  margin:0 auto 14px;
+}
+
+.hash {
+  font-family:Consolas,monospace;
+  font-size:.78rem;
+  color:var(--muted);
+  word-break:break-all;
+  margin-top:22px;
+}
+
+details {
+  border-bottom:1px solid var(--line);
+  padding:16px 0;
+  max-width:46em;
+}
+
+summary {
+  cursor:pointer;
+  font-weight:600;
+}
+
+details p { margin-top:10px; }
+
+footer {
+  padding:40px 0 56px;
+  color:var(--muted);
+  font-size:.88rem;
+  border-top:1px solid var(--line);
+}
+
+footer a {
+  color:var(--sub);
+  text-decoration:none;
+}
+
+@media (max-width:820px) {
+  .hero,.feat,.facts {
+    grid-template-columns:1fr;
+  }
+
+  .hero {
+    padding-top:24px;
+    gap:40px;
+  }
+
+  .mock { transform:none; }
+
+  nav a.lnk { display:none; }
+
+  .dl { padding:28px 20px; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  * {
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<nav aria-label="Main menu">
+  <a class="logo" href="#">VyloVault</a>
+  <div>
+    <a class="lnk" href="#security">Security</a>
+    <a class="lnk" href="#install">Installation</a>
+    <a class="lnk" href="#faq">FAQ</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div>
+    <h1>Your passwords. Encrypted on your own PC.</h1>
+
+    <p class="lead">
+      VyloVault is a password manager for Windows.
+      Your data stays local, is encrypted with your master
+      password and never leaves your computer.
+    </p>
+
+    <div class="cta">
+
+      <!-- DOWNLOAD BUTTON 1 -->
+      <a class="btn"
+         href="https://github.com/vylosoftware/Vylo/blob/main/VyloVault_Setup.exe?raw=true"
+         download="VyloVault_Setup.exe">
+        Download VyloVault for Windows
+      </a>
+
+      <a class="btn ghost" href="#install">
+        How to install
+      </a>
+
+    </div>
+
+    <p class="small">
+      Free · Windows 10 and 11 · Version 1.0 · About 17 MB
+    </p>
+  </div>
+
+  <div class="mock" role="img"
+       aria-label="Preview of saved logins with password strength">
+
+    <div class="bar"></div>
+
+    <div class="row">
+      <div class="av" style="background:#853BFA">M</div>
+      <div>
+        <b>Mail</b>
+        <span>name@example.com</span>
+      </div>
+      <span class="pw">••••••••</span>
+    </div>
+
+    <div class="row">
+      <div class="av" style="background:#E05BCE">S</div>
+      <div>
+        <b>Shop</b>
+        <span>Shopping</span>
+      </div>
+      <span class="pw">••••••••</span>
+    </div>
+
+    <div class="row">
+      <div class="av" style="background:#38BDF8">B</div>
+      <div>
+        <b>Bank</b>
+        <span>Finance</span>
+      </div>
+      <span class="pw">••••••••</span>
+    </div>
+
+    <div class="meter" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i>
+    </div>
+
+    <p>Very strong</p>
+  </div>
+</header>
+
+<section>
+  <div class="feat">
+
+    <div>
+      <h3>Password Generator</h3>
+      <p>
+        Create random, strong passwords with one click.
+        Choose the length and character types yourself.
+      </p>
+    </div>
+
+    <div>
+      <h3>Security Check</h3>
+      <p>
+        Find weak, reused and outdated passwords
+        and see what needs to be changed.
+      </p>
+    </div>
+
+    <div>
+      <h3>7 Languages</h3>
+      <p>
+        English, German, Spanish, French, Chinese,
+        Japanese and Russian. Includes dark and light mode.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<section id="security">
+  <h2>How VyloVault Protects Your Data</h2>
+
+  <ul class="facts">
+    <li>Your master password is never stored.</li>
+    <li>Key derivation with PBKDF2 (600,000 rounds) and a unique salt per account.</li>
+    <li>The entire vault is encrypted and authenticated using AES (Fernet).</li>
+    <li>After 5 failed attempts, the lockout time increases, even after a restart.</li>
+    <li>Automatic logout after inactivity.</li>
+    <li>The clipboard is cleared after a time you choose.</li>
+  </ul>
+</section>
+
+<section id="install">
+  <h2>Install in Three Easy Steps</h2>
+
+  <ol class="steps">
+    <li>Download VyloVault_Setup.exe using the download button above.</li>
+    <li>Run the installer. If Windows displays an unknown publisher warning, verify the download before proceeding.</li>
+    <li>Choose your language and installation folder, then click Install.</li>
+  </ol>
+</section>
+
+<section>
+  <div class="dl">
+
+    <h2>Ready for Your Vault?</h2>
+
+    <!-- DOWNLOAD BUTTON 2 -->
+    <a class="btn"
+       href="https://github.com/vylosoftware/Vylo/blob/main/VyloVault_Setup.exe?raw=true"
+       download="VyloVault_Setup.exe">
+      Download VyloVault_Setup.exe
+    </a>
+
+    <p class="hash">
+      SHA-256:
+      a7399a50c1f7c19f640e7930949e8ac4091ec499d7bee80551688b28fc0c42af
+    </p>
+
+  </div>
+</section>
+
+<section id="faq">
+  <h2>Frequently Asked Questions</h2>
+
+  <details>
+    <summary>What if I forget my master password?</summary>
+    <p>
+      There is no recovery option. Your master password is
+      not stored, so nobody can decrypt your data.
+      Keep your password somewhere safe.
+    </p>
+  </details>
+
+  <details>
+    <summary>Why does Windows show a warning?</summary>
+    <p>
+      The installer does not currently have a code-signing
+      certificate, so Windows may not recognize the publisher.
+      You can verify the SHA-256 checksum using PowerShell:
+      <code>Get-FileHash VyloVault_Setup.exe -Algorithm SHA256</code>.
+    </p>
+  </details>
+
+  <details>
+    <summary>Where is my data stored?</summary>
+    <p>
+      In the .vylovault folder in your user directory.
+      It is kept when you update or uninstall.
+      You can export an encrypted backup in Settings.
+    </p>
+  </details>
+
+  <details>
+    <summary>Does VyloVault send anything to the internet?</summary>
+    <p>
+      No. VyloVault stores everything locally and does
+      not require an internet connection.
+    </p>
+  </details>
+</section>
+
+<footer>
+  VyloVault is an independent hobby project by Vylo.
+  Use at your own risk.
+  <br><br>
+  <a href="https://github.com/vylosoftware/Vylo">
+    View on GitHub
+  </a>
+</footer>
+
+</div>
+</body>
+</html>
